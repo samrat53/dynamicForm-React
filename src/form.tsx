@@ -1,19 +1,32 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
-interface formProps{
-    heading: string;
-    handleTextChange: ((event1: ChangeEvent<HTMLInputElement>)=>void);
-    handleDateEntry: (event2: ChangeEvent)=>void;
-    showMessage: ()=>void;
+interface formProps {
+  heading: string;
+  handleTextChange: (event1: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Form = ({heading, handleTextChange,handleDateEntry,showMessage} : formProps) => {
+const Form = ({ heading, handleTextChange }: formProps) => {
+  let [mouseOver, setMouseOver] = useState(false);
   return (
     <div className="container">
       <h1 className="heading">{heading}</h1>
-      <input type="text" className="name" placeholder="Enter Name" onChange={handleTextChange} />
-      <input type="date" className="birthday" onChange={handleDateEntry}/>
-      <button className="submit" onClick={showMessage}>Submit</button>
+      <input
+        type="text"
+        className="name"
+        placeholder="Enter Name"
+        onChange={handleTextChange}
+      />
+
+      <button
+        className="submit"
+        onMouseOver={() => setMouseOver(true)}
+        onMouseOut={() => setMouseOver(false)}
+        style={{
+          backgroundColor: mouseOver ? "rgb(84, 249, 255)" : "rgb(104, 255, 84)",
+        }}
+      >
+        <span>Submit</span>
+      </button>
     </div>
   );
 };
