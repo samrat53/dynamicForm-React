@@ -9,7 +9,7 @@ const Form = () => {
 
 
   let globalName=name;
-  let globalDaysLeft;
+  let [globalDaysLeft,setGlobalDays]=useState(-1);
 
   const handleTextChange = (event1: ChangeEvent<HTMLInputElement>) =>
     setName(event1.target.value);
@@ -29,19 +29,13 @@ const Form = () => {
     //   `todayDateString: ${todayDateString} and type: ${typeof todayDateString}`
     // );
 
-    const today = new Date(); // Current date
-    // const birthdayString = "yyyy-mm-dd"; // Your formatted birthday string, e.g., '2023-08-15'
+    const today = new Date();
     const [year, month, day] = birthdayString.split("-").map(Number);
-    const birthday = new Date(year, month - 1, day); // Month is 0-indexed
-
-    // Calculate the time difference in milliseconds
+    const birthday = new Date(year, month - 1, day);
     const timeDiff = birthday.getTime() - today.getTime();
-
-    // Convert milliseconds to days
     const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     globalDaysLeft=daysLeft;
-    console.log(globalDaysLeft);
-    // alert(`${name} : days left for your birthday is: ${daysLeft}` );
+    setGlobalDays(daysLeft);
 
     return setDob(birthdayString);
   };
