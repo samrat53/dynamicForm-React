@@ -7,24 +7,46 @@ const Form = () => {
   let currdate = new Date().getDate();
   let [dob, setDob] = useState(currdate.toString());
 
+
+  let globalName=name;
+  let globalDaysLeft;
+
   const handleTextChange = (event1: ChangeEvent<HTMLInputElement>) =>
     setName(event1.target.value);
 
   const handleDateEntry = (event2: ChangeEvent<HTMLInputElement>) => {
     const birthdayString = event2.target.value.toString();
-    console.log(`birthdayString: ${birthdayString} and type: ${typeof birthdayString}`);
+    console.log(
+      `birthdayString: ${birthdayString} and type: ${typeof birthdayString}`
+    );
 
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const todayDateString = `${year}-${month}-${day}`; //string format of today's date
-    console.log(`todayDateString: ${todayDateString} and type: ${typeof todayDateString}`);
+    // const today = new Date();
+    // const year = today.getFullYear();
+    // const month = String(today.getMonth() + 1).padStart(2, "0");
+    // const day = String(today.getDate()).padStart(2, "0");
+    // const todayDateString = `${year}-${month}-${day}`; //string format of today's date
+    // console.log(
+    //   `todayDateString: ${todayDateString} and type: ${typeof todayDateString}`
+    // );
 
-    console.log(Math.abs(birthdayString - todayDateString)); //issue: logging NaN in console
+    const today = new Date(); // Current date
+    // const birthdayString = "yyyy-mm-dd"; // Your formatted birthday string, e.g., '2023-08-15'
+    const [year, month, day] = birthdayString.split("-").map(Number);
+    const birthday = new Date(year, month - 1, day); // Month is 0-indexed
+
+    // Calculate the time difference in milliseconds
+    const timeDiff = birthday.getTime() - today.getTime();
+
+    // Convert milliseconds to days
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    globalDaysLeft=daysLeft;
+    console.log(globalDaysLeft);
+    // alert(`${name} : days left for your birthday is: ${daysLeft}` );
 
     return setDob(birthdayString);
   };
+
+
 
   return (
     <div className="container">
@@ -48,8 +70,10 @@ const Form = () => {
 
       <button
         className="submit"
+        name="alertButton"
         onMouseOver={() => setMouseOver(true)}
         onMouseOut={() => setMouseOver(false)}
+        onClick={()=>alert(`${globalName} : days left for your birthday is: ${globalDaysLeft}`)}
         style={{
           backgroundColor: mouseOver
             ? "rgb(84, 249, 255)"
