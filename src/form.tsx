@@ -21,7 +21,9 @@ const Form = () => {
     const [year, month, day] = birthdayString.split("-").map(Number);
     const birthday = new Date(year, month - 1, day);
     const timeDiff = birthday.getTime() - today.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    let daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    (daysLeft<=1)? (daysLeft=365+daysLeft) : (daysLeft);
 
     globalDaysLeft = daysLeft;
     setGlobalDays(daysLeft);
@@ -31,12 +33,12 @@ const Form = () => {
 
   return (
     <div className="container">
-      <h1 className="heading">{"Voila! "+name}</h1>
+      <h1 className="heading">{"Voila! " + name}</h1>
       <input
         type="text"
         className="name"
         name="goodName"
-        placeholder="Enter Name"
+        placeholder="Enter your name"
         value={name}
         onChange={handleTextChange}
       />
@@ -48,7 +50,9 @@ const Form = () => {
         value={dob}
         onChange={handleDateEntry}
       />
-      <h1 className="heading subHeading">Enter your next birthday date and submit</h1>
+      <p className="heading subHeading">
+        Enter your next birthday date and submit
+      </p>
 
       <button
         className="submit"
@@ -57,9 +61,11 @@ const Form = () => {
         onMouseOut={() => setMouseOver(false)}
         onClick={() =>
           globalDaysLeft === 0
-            ? alert(`Hey ${globalName}, Happy Birthday. Enjoy its your day`)
+            ? alert(
+                `🚀🎉 Hey ${globalName}, Happy Birthday. Mark this day as the most memorable one 🎂🎈🎁 `
+              )
             : alert(
-                `The developer wishes ${globalName} Happy Birthday in ${globalDaysLeft} days advance`
+                `🚀🎉 The Developer wishes Happy Birthday to the incredible ${globalName}, ${globalDaysLeft} days early! 🎂🎈🎁`
               )
         }
         style={{
