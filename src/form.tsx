@@ -10,17 +10,22 @@ const Form = () => {
   const handleTextChange = (event1: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event1.target;
     setFullName((prevValue) => {
-      if (name === "fName")
-        return {
-          fName: value,
-          lName: prevValue.lName,
-        };
-      else if (name === "lName")
-        return {
-          fName: prevValue.fName,
-          lName: value,
-        };
-      else return prevValue;
+      return {
+        ...prevValue, //entire below commented code is replaced by this line
+        [name]: value,
+      };
+
+      // if (name === "fName")
+      //   return {
+      //     fName: value,
+      //     lName: prevValue.lName,
+      //   };
+      // else if (name === "lName")
+      //   return {
+      //     fName: prevValue.fName,
+      //     lName: value,
+      //   };
+      // else return prevValue;
     });
   };
 
@@ -84,10 +89,14 @@ const Form = () => {
         onClick={() =>
           globalDaysLeft === 0
             ? alert(
-                `🚀🎉 Hey ${fullName.fName +" "+ fullName.lName}, Happy Birthday. Mark this day as the most memorable one 🎂🎈🎁 `
+                `🚀🎉 Hey ${
+                  fullName.fName + " " + fullName.lName
+                }, Happy Birthday. Mark this day as the most memorable one 🎂🎈🎁 `
               )
             : alert(
-                `🚀🎉 The Developer wishes Happy Birthday to the incredible ${fullName.fName +" "+ fullName.lName}, ${globalDaysLeft} days early! 🎂🎈🎁`
+                `🚀🎉 The Developer wishes Happy Birthday to the incredible ${
+                  fullName.fName + " " + fullName.lName
+                }, ${globalDaysLeft} days early! 🎂🎈🎁`
               )
         }
         style={{
