@@ -1,15 +1,28 @@
 import { ChangeEvent, useState } from "react";
 
 const Form = () => {
-  let [mouseOver, setMouseOver] = useState(false);
-  let [name, setName] = useState("");
   let [dob, setDob] = useState(new Date().toDateString());
-
-  let globalName = name;
+  let [mouseOver, setMouseOver] = useState(false);
   let [globalDaysLeft, setGlobalDays] = useState(-1);
 
-  const handleTextChange = (event1: ChangeEvent<HTMLInputElement>) =>
-    setName(event1.target.value);
+  let [fullName, setFullName] = useState({ fName: "", lName: "" });
+
+  const handleTextChange = (event1: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event1.target;
+    setFullName((prevValue) => {
+      if (name === "fName")
+        return {
+          fName: value,
+          lName: prevValue.lName,
+        };
+      else if (name === "lName")
+        return {
+          fName: prevValue.fName,
+          lName: value,
+        };
+      else return prevValue;
+    });
+  };
 
   const handleDateEntry = (event2: ChangeEvent<HTMLInputElement>) => {
     const birthdayString = event2.target.value.toString();
@@ -23,7 +36,7 @@ const Form = () => {
     const timeDiff = birthday.getTime() - today.getTime();
     let daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    (daysLeft<=1)? (daysLeft=365+daysLeft) : (daysLeft);
+    daysLeft <= 1 ? (daysLeft = 365 + daysLeft) : daysLeft;
 
     globalDaysLeft = daysLeft;
     setGlobalDays(daysLeft);
@@ -33,13 +46,22 @@ const Form = () => {
 
   return (
     <div className="container">
-      <h1 className="heading">{"Voila! " + name}</h1>
+      <h1 className="heading">{`Voila! ${fullName.fName} ${fullName.lName}`}</h1>
       <input
         type="text"
-        className="name"
-        name="goodName"
-        placeholder="Enter your name"
-        value={name}
+        className="name fName"
+        name="fName"
+        placeholder="Enter your first name"
+        value={fullName.fName}
+        onChange={handleTextChange}
+      />
+
+      <input
+        type="text"
+        className="name lName"
+        name="lName"
+        placeholder="Enter your last name"
+        value={fullName.lName}
         onChange={handleTextChange}
       />
 
@@ -62,10 +84,10 @@ const Form = () => {
         onClick={() =>
           globalDaysLeft === 0
             ? alert(
-                `🚀🎉 Hey ${globalName}, Happy Birthday. Mark this day as the most memorable one 🎂🎈🎁 `
+                `🚀🎉 Hey ${fullName.fName +" "+ fullName.lName}, Happy Birthday. Mark this day as the most memorable one 🎂🎈🎁 `
               )
             : alert(
-                `🚀🎉 The Developer wishes Happy Birthday to the incredible ${globalName}, ${globalDaysLeft} days early! 🎂🎈🎁`
+                `🚀🎉 The Developer wishes Happy Birthday to the incredible ${fullName.fName +" "+ fullName.lName}, ${globalDaysLeft} days early! 🎂🎈🎁`
               )
         }
         style={{
